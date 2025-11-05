@@ -1,16 +1,20 @@
+# Use lightweight Node.js image
 FROM node:22-alpine
 
+# Set working directory inside container
 WORKDIR /app
 
-COPY pakage*.json ./
+# Copy package files first (for better caching)
+COPY package*.json ./
 
+# Install dependencies
 RUN npm install
 
-
+# Copy all source code
 COPY . .
 
-EXPOSE 8081
+# Expose the port Cloud Run will use
+EXPOSE 8080
 
-
-CMD [ "node", "server.js" ]
-
+# Run the server
+CMD ["node", "server.js"]
