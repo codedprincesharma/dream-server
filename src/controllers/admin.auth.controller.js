@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 export async function adminRegisterController(req, res) {
   try {
-    const { name, email, password } = req.body ?? {};
+    const { name, email, password, role } = req.body ?? {};
 
     // basic presence validation
     if (!name || !email || !password) {
@@ -28,6 +28,7 @@ export async function adminRegisterController(req, res) {
       name: String(name).trim(),
       email: normalizedEmail,
       password: hashPass,
+      role
     });
 
     // create JWT
@@ -37,7 +38,7 @@ export async function adminRegisterController(req, res) {
     }
 
     const token = jwt.sign(
-      { id: admin._id.toString(), name: admin.name, email: admin.email },
+      { id: admin._id.toString(), name: admin.name, email: admin.email, role: admin.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
@@ -106,7 +107,7 @@ export async function adminLoginController(req, res) {
     }
 
     // Payload - keep it small
-    const payload = { id: admin._id.toString(), name: admin.name, email: admin.email };
+    const payload = { id: admin._id.toString(), name: admin.name, email: admin.email, role:admin.role };
 
     // Create access token (short lived)
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });

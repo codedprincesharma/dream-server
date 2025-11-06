@@ -24,13 +24,16 @@ app.use(
         return callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, // ✅ important: allow cookies (JWT) to be sent
+    credentials: true, 
   })
 );
 
 import authRouter from './routes/auth.route.js'
+import adminManageRoute from './routes/admin.manages.route.js'
 
 
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/manage', adminManageRoute)
+
 
 export default app
